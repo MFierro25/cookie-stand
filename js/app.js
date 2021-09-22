@@ -3,182 +3,83 @@
 
 let hoursopen = ["6am,", "7am", "8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm"];
 
-    let seattle = {
-        name: 'seattle',
-        minperhour: 23,
-        maxperhour: 65,
-        avgcookieperhour: 6.3,
-        salesperhour: [],
-        grandtotal: 0,
-        hourlycustomers: function () {
-            for (let hour = 0; hour < hoursopen.length; hour++) {
-                let randomnumber = Math.floor(Math.random() * (this.maxperhour - this.minperhour + 1) + this.minperhour);
-               this.salesperhour.push(Math.round(randomnumber * this.avgcookieperhour));
-                this.grandtotal = this.grandtotal + randomnumber;
-                console.log(this.grandtotal)
-            }
-        },
+function Location (name, min, max, avg,) {
+
+        this.name = name;
+        this.minperhour = min;
+        this.maxperhour = max;
+        this.avgcookieperhour = avg;
+        this.avgcustperhour= 0;
+        this.salesperhour = [];
+        this.grandtotal = 0;
+};
+
+        Location.prototype.findavgcustperhour = function () {
+            let min = this.minperhour;
+            let max = this.maxperhour;
+            this.avgcustperhour = Math.floor(Math.random() * (max - min +1) + min);
+            return Math.ceil(this.avgcustperhour);
+}
+        Location.prototype.findhourlysales = function () {
+        for (let i=0; i < hoursopen.length; i++) {
+            this.findavgcustperhour();
+            this.salesperhour[i] = Math.ceil(this.avgcustperhour*this.avgcookieperhour);
+            this.total= this.total + this.salesperhour[i];
+        }
+        };
+
+
+    Location.prototype.render = function () {
+        const tableEl = document.getElementById('sales-table');
+        let row1 = document.createElement('tr');
+        const row2 = document.createElement('tr');
+        const row3 = document.createElement('tr');
+
+
+        let th1 = document.createElement('th');
+        th1.innerText = hoursopen;
+
+        let th2 = document.createElement('td');
+        th2.textContent = this.name;
+
+        let th3 = document.createElement('td');
+        th3.textContent = this.salesperhour;
+
+        row1.appendChild(th1);
+        row2.appendChild(th2);
+        row3.appendChild(th3);
+
+        tableEl.appendChild(row1);
+        tableEl.appendChild(row2);
+        tableEl.appendChild(row3);   
     };
 
-            seattle.hourlycustomers()
+let Seattle = new Location ('seattle', 23, 65, 6.3);
+Seattle.findavgcustperhour ();
+Seattle.findhourlysales ();
+Seattle.render ();
+console.log(Seattle);
 
-    function generatelineitems(store) {
+let Tokyo = new Location ('tokyo', 3, 24, 1.2);
+Tokyo.findavgcustperhour ();
+Tokyo.findhourlysales ();
+Tokyo.render ();
+console.log(Tokyo);
 
-        let parentEl = document.querySelector(`#${store.name}`);
+let Dubai = new Location ('dubai', 11, 38, 3.7);
+Dubai.findavgcustperhour ();
+Dubai.findhourlysales ();
+Dubai.render ();
+console.log(Dubai);
 
-                for (let total = 0; total < store.salesperhour.length; total++) {
-                let newItem = document.createElement('li');
-                newItem.innerText = store.salesperhour[total];
-                parentEl.appendChild(newItem);
-            }
-            let lastitem = document.createElement('li');
-            lastitem.innerText = store.grandtotal;
-            parentEl.appendChild(lastitem);
-    }
-console.log(seattle);
-seattle.hourlycustomers();
-generatelineitems(seattle);
+let Paris = new Location ('paris', 20, 38, 2.3);
+Paris.findavgcustperhour ();
+Paris.findhourlysales ();
+Paris.render ();
+console.log(Paris);
 
-    let tokyo = {
-        name: 'tokyo',
-        minperhour: 3,
-        maxperhour: 24,
-        avgcookieperhour: 1.2,
-        salesperhour: [],
-        grandtotal: 0,
-        hourlycustomers: function () {
-            for (let hour = 0; hour < hoursopen.length; hour++) {
-                let randomnumber = Math.floor(Math.random() * (this.maxperhour - this.minperhour + 1) + this.minperhour);
-               this.salesperhour.push(Math.round(randomnumber * this.avgcookieperhour));
-                this.grandtotal = this.grandtotal + randomnumber;
-                console.log(this.grandtotal)
-            }
-        },
-    };
-
-            tokyo.hourlycustomers()
-
-    function generatelineitems(store) {
-
-        let parentEl = document.querySelector(`#${store.name}`);
-
-                for (let total = 0; total < store.salesperhour.length; total++) {
-                let newItem = document.createElement('li');
-                newItem.innerText = store.salesperhour[total];
-                parentEl.appendChild(newItem);
-            }
-            let lastitem = document.createElement('li');
-            lastitem.innerText = store.grandtotal;
-            parentEl.appendChild(lastitem);
-    }
-console.log(tokyo);
-tokyo.hourlycustomers();
-generatelineitems(tokyo);
-
-let dubai = {
-    name: 'dubai',
-    minperhour: 11,
-    maxperhour: 38,
-    avgcookieperhour: 3.7,
-    salesperhour: [],
-    grandtotal: 0,
-    hourlycustomers: function () {
-        for (let hour = 0; hour < hoursopen.length; hour++) {
-            let randomnumber = Math.floor(Math.random() * (this.maxperhour - this.minperhour + 1) + this.minperhour);
-           this.salesperhour.push(Math.round(randomnumber * this.avgcookieperhour));
-            this.grandtotal = this.grandtotal + randomnumber;
-            console.log(this.grandtotal)
-        }
-    },
-};
-
-        dubai.hourlycustomers()
-
-function generatelineitems(store) {
-
-    let parentEl = document.querySelector(`#${store.name}`);
-
-            for (let total = 0; total < store.salesperhour.length; total++) {
-            let newItem = document.createElement('li');
-            newItem.innerText = store.salesperhour[total];
-            parentEl.appendChild(newItem);
-        }
-        let lastitem = document.createElement('li');
-        lastitem.innerText = store.grandtotal;
-        parentEl.appendChild(lastitem);
-}
-console.log(dubai);
-dubai.hourlycustomers();
-generatelineitems(dubai);
-
-let paris = {
-    name: 'paris',
-    minperhour: 20,
-    maxperhour: 38,
-    avgcookieperhour: 2.3,
-    salesperhour: [],
-    grandtotal: 0,
-    hourlycustomers: function () {
-        for (let hour = 0; hour < hoursopen.length; hour++) {
-            let randomnumber = Math.floor(Math.random() * (this.maxperhour - this.minperhour + 1) + this.minperhour);
-           this.salesperhour.push(Math.round(randomnumber * this.avgcookieperhour));
-            this.grandtotal = this.grandtotal + randomnumber;
-            console.log(this.grandtotal)
-        }
-    },
-};
-
-        paris.hourlycustomers()
-
-function generatelineitems(store) {
-
-    let parentEl = document.querySelector(`#${store.name}`);
-
-            for (let total = 0; total < store.salesperhour.length; total++) {
-            let newItem = document.createElement('li');
-            newItem.innerText = store.salesperhour[total];
-            parentEl.appendChild(newItem);
-        }
-        let lastitem = document.createElement('li');
-        lastitem.innerText = store.grandtotal;
-        parentEl.appendChild(lastitem);
-}
-console.log(paris);
-paris.hourlycustomers();
-generatelineitems(paris);
-
-let lima = {
-    name: 'lima',
-    minperhour: 2,
-    maxperhour: 16,
-    avgcookieperhour: 4.6,
-    salesperhour: [],
-    grandtotal: 0,
-    hourlycustomers: function () {
-        for (let hour = 0; hour < hoursopen.length; hour++) {
-            let randomnumber = Math.floor(Math.random() * (this.maxperhour - this.minperhour + 1) + this.minperhour);
-           this.salesperhour.push(Math.round(randomnumber * this.avgcookieperhour));
-            this.grandtotal = this.grandtotal + randomnumber;
-            console.log(this.grandtotal)
-        }
-    },
-};
-
-        lima.hourlycustomers()
-
-function generatelineitems(store) {
-
-    let parentEl = document.querySelector(`#${store.name}`);
-
-            for (let total = 0; total < store.salesperhour.length; total++) {
-            let newItem = document.createElement('li');
-            newItem.innerText = store.salesperhour[total];
-            parentEl.appendChild(newItem);
-        }
-        let lastitem = document.createElement('li');
-        lastitem.innerText = store.grandtotal;
-        parentEl.appendChild(lastitem);
-}
-console.log(lima);
-lima.hourlycustomers();
-generatelineitems(lima);
+let Lima = new Location ('lima', 2, 16, 4.6);
+Lima.findavgcustperhour ();
+Lima.findhourlysales ();
+Lima.render ();
+console.log(Lima);
