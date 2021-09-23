@@ -8,7 +8,7 @@ function Location (name, min, max, avg,) {
         this.name = name;
         this.minperhour = min;
         this.maxperhour = max;
-        this.avgcookieperhour = avg;
+        this.avgcookiesales = avg;
         this.salesperhour = [];
         this.avgcustperhour= 0;
         this.dailysales = 0;
@@ -27,12 +27,35 @@ Location.prototype.findavgcustperhour = function () {
 Location.prototype.findhourlysales = function () {
 for (let i=0; i < hoursopen.length; i++) {
     this.findavgcustperhour();
-    this.salesperhour[i] = Math.ceil(this.avgcustperhour*this.avgcookieperhour);
+    this.salesperhour[i] = Math.ceil(this.avgcustperhour*this.avgcookiesales);
     this.dailysales= this.dailysales + this.salesperhour[i];
 }
 };
 
-function renderheader () {
+let locationFormEl = document.getElementById('addnewstore');
+
+function handlenewlocation (formSubmission) {
+    formSubmission.preventDefault();
+    
+    let name = formSubmission.target.name.value;
+    let min = formSubmission.target.minperhour.value;
+    let max= formSubmission.target.maxperhour.value;
+    let avg = formSubmission.target.avgcookiesales.value;
+
+   let location = new Location(name, min, max, avg);
+   console.log(location)
+
+    location.findhourlysales ();
+    location.findavgcustperhour ();
+    location.render ();
+}
+
+
+ locationFormEl.addEventListener('submit', handlenewlocation);
+
+
+
+ function renderheader () {
     let tableEl = document.getElementById('sales-table');
     let rowEl = document.createElement('tr');
 
@@ -43,11 +66,16 @@ function renderheader () {
     for (let i = 0; i < hoursopen.length; i ++) {
     dataEl = document.createElement('td');
     dataEl.innerText = hoursopen[i];
-
     rowEl.appendChild(dataEl);
 }
+
+dataEl = document.createElement('td');
+    dataEl.innerText = 'Daily Totals';
+    rowEl.appendChild(dataEl);
+
     tableEl.appendChild(rowEl);
 }
+
 
 renderheader ();
 
@@ -70,7 +98,6 @@ renderheader ();
           dataEl.innerText = this.dailysales;
           rowEl.appendChild(dataEl);
         
-          //  append the row to our table
           tableEl.appendChild(rowEl);
         };
 
@@ -108,7 +135,7 @@ console.log(Location.all);
 
 function renderfooter () {
     let tableEl = document.getElementById('sales-table');
-    let rowEl = document.createElement('tr');
+    let rowEl = document.createElement('tfoot');
 
     let dataEl = document.createElement('td');
     dataEl.innerText = "Totals";
