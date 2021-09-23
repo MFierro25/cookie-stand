@@ -9,77 +9,128 @@ function Location (name, min, max, avg,) {
         this.minperhour = min;
         this.maxperhour = max;
         this.avgcookieperhour = avg;
-        this.avgcustperhour= 0;
         this.salesperhour = [];
+        this.avgcustperhour= 0;
+        this.dailysales = 0;
         this.grandtotal = 0;
+        Location.all.push(this);
 };
 
-        Location.prototype.findavgcustperhour = function () {
-            let min = this.minperhour;
-            let max = this.maxperhour;
-            this.avgcustperhour = Math.floor(Math.random() * (max - min +1) + min);
-            return Math.ceil(this.avgcustperhour);
+    Location.all = [];
+     
+Location.prototype.findavgcustperhour = function () {
+    let min = this.minperhour;
+    let max = this.maxperhour;
+    this.avgcustperhour = Math.floor(Math.random() * (max - min +1) + min);
+    return Math.ceil(this.avgcustperhour);
 }
-        Location.prototype.findhourlysales = function () {
-        for (let i=0; i < hoursopen.length; i++) {
-            this.findavgcustperhour();
-            this.salesperhour[i] = Math.ceil(this.avgcustperhour*this.avgcookieperhour);
-            this.total= this.total + this.salesperhour[i];
-        }
-        };
+Location.prototype.findhourlysales = function () {
+for (let i=0; i < hoursopen.length; i++) {
+    this.findavgcustperhour();
+    this.salesperhour[i] = Math.ceil(this.avgcustperhour*this.avgcookieperhour);
+    this.dailysales= this.dailysales + this.salesperhour[i];
+}
+};
+
+function renderheader () {
+    let tableEl = document.getElementById('sales-table');
+    let rowEl = document.createElement('tr');
+
+    let dataEl = document.createElement('td');
+    dataEl.innerText = "Store Locations";
+    rowEl.appendChild(dataEl);
+
+    for (let i = 0; i < hoursopen.length; i ++) {
+    dataEl = document.createElement('td');
+    dataEl.innerText = hoursopen[i];
+
+    rowEl.appendChild(dataEl);
+}
+    tableEl.appendChild(rowEl);
+}
+
+renderheader ();
 
 
     Location.prototype.render = function () {
-        const tableEl = document.getElementById('sales-table');
-        let row1 = document.createElement('tr');
-        const row2 = document.createElement('tr');
-        const row3 = document.createElement('tr');
+        let tableEl = document.getElementById('sales-table');
+        let rowEl = document.createElement('tr');
 
+        let dataEl = document.createElement('td');
+        dataEl.innerText = this.name;
+        rowEl.appendChild(dataEl);
 
-        let th1 = document.createElement('th');
-        th1.innerText = hoursopen;
+        for (let sale = 0; sale < this.salesperhour.length; sale++) {
+            let dataEl = document.createElement('td');
+            dataEl.innerText = this.salesperhour[sale];
+            rowEl.appendChild(dataEl);
+          }
 
-        let th2 = document.createElement('td');
-        th2.textContent = this.name;
-
-        let th3 = document.createElement('td');
-        th3.textContent = this.salesperhour;
-
-        row1.appendChild(th1);
-        row2.appendChild(th2);
-        row3.appendChild(th3);
-
-        tableEl.appendChild(row1);
-        tableEl.appendChild(row2);
-        tableEl.appendChild(row3);   
-    };
+          dataEl = document.createElement('td');
+          dataEl.innerText = this.dailysales;
+          rowEl.appendChild(dataEl);
+        
+          //  append the row to our table
+          tableEl.appendChild(rowEl);
+        };
 
 let Seattle = new Location ('seattle', 23, 65, 6.3);
-Seattle.findavgcustperhour ();
 Seattle.findhourlysales ();
+Seattle.findavgcustperhour ();
 Seattle.render ();
 console.log(Seattle);
 
 let Tokyo = new Location ('tokyo', 3, 24, 1.2);
-Tokyo.findavgcustperhour ();
 Tokyo.findhourlysales ();
+Tokyo.findavgcustperhour ();
 Tokyo.render ();
 console.log(Tokyo);
 
 let Dubai = new Location ('dubai', 11, 38, 3.7);
-Dubai.findavgcustperhour ();
 Dubai.findhourlysales ();
+Dubai.findavgcustperhour ();
 Dubai.render ();
 console.log(Dubai);
 
 let Paris = new Location ('paris', 20, 38, 2.3);
-Paris.findavgcustperhour ();
 Paris.findhourlysales ();
+Paris.findavgcustperhour ();
 Paris.render ();
 console.log(Paris);
 
 let Lima = new Location ('lima', 2, 16, 4.6);
-Lima.findavgcustperhour ();
 Lima.findhourlysales ();
+Lima.findavgcustperhour ();
 Lima.render ();
-console.log(Lima);
+console.log(Lima)
+
+console.log(Location.all);
+
+function renderfooter () {
+    let tableEl = document.getElementById('sales-table');
+    let rowEl = document.createElement('tr');
+
+    let dataEl = document.createElement('td');
+    dataEl.innerText = "Totals";
+    rowEl.appendChild(dataEl);
+
+    let grandtotal = 0;
+    for (let hour = 0; hour < hoursopen.length; hour ++) {
+        let dataEl = document.createElement('td');
+    let sum = 0;
+    for (let store = 0; store < Location.all.length; store++) {
+        sum = sum + Location.all[store].salesperhour[hour];
+        grandtotal = grandtotal + Location.all[store].salesperhour[hour];
+      }
+      dataEl.innerText = sum;
+      rowEl.appendChild(dataEl);
+    }
+   
+    dataEl = document.createElement('td');
+    dataEl.innerText = grandtotal;
+    rowEl.appendChild(dataEl);
+        tableEl.appendChild(rowEl);
+}
+
+
+renderfooter ();
