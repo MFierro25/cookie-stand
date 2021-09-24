@@ -1,0 +1,40 @@
+
+main {
+    background-color: rgb(25, 17, 2);
+    font-family: Helvetica, sans-serif;
+    color:rgb(236, 235, 233);
+}
+
+p{
+    font-family: Helvetica, sans-serif;
+    color:rgb(236, 235, 233)
+}
+.title {
+    color: rgb(253, 184, 176);
+    
+    text-align: center;
+    font-family: 'Gorditas', cursive;
+}
+
+li {
+    font-family: Helvetica, sans-serif;
+    color: rgb(236, 235, 233);
+}
+div h4 {
+    font-family: 'Gorditas', cursive;
+    color: rgb(253, 184, 176);
+}
+
+a:visited, a:link {
+    color: rgb(217, 215, 211);
+}
+
+a:hover, a:active {
+color:rgb(77, 31, 25);
+}
+
+
+footer {
+    text-align: right;
+    background-color: rgb(126, 108, 108);
+}
